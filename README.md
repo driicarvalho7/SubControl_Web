@@ -1,3 +1,17 @@
+<br />
+<div align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">SSC0961 - Desenvolvimento Web e Mobile</h3>
+
+  <p align="center">
+    Este é um projeto para a matéria de Desenvolvimento Web e Mobile, o intuito desse aplicativo é ser um hub para o  gerenciamento de assinaturas recorrentes que você usuário possui, como Netflix, Spotify, Prime Video e etc... Espero que goste! 😊
+  </p>
+</div>
+<br /><br />
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
