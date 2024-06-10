@@ -16,8 +16,8 @@
 
 This is an project that uses [Expo](https://expo.dev) to de client mobile app, [NodeJS]() for the APIs that comunicate with de client and [MongoDB]() for the database comunication. This is an exemple of the architecture of the Project:
 
-<div>
-    <img src="https://i.ibb.co/d0sjRmx/sub-control-architecturepng.png" alt="Logo" width="851" height="508">
+<div align="center">
+  <img src="https://github.com/driicarvalho7/SubControl_Web/blob/main/sub_control_architecturepng.png" alt="Arquitetura do Sistema">
 </div>
 
 ## Get started
