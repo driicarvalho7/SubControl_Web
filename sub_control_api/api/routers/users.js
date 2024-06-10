@@ -1,13 +1,16 @@
 module.exports = app => {
-    const controller = require('../controllers/users')();
-      
-    app.route('/api/users/getAllUsers')
-      .get(controller.getAllUsers);
-  
-    app.route('/api/users/register')
-      .post(controller.createUser);
+  const userController = require('../controllers/users')();
+  const loginController = require('../controllers/login')();
 
-      app.route('/api/users/login')
-        .post(controller.loginUser);
-  };
-  
+  app.route('/api/users')
+    .post(userController.createUser)
+    .get(userController.getUsers);
+
+  app.route('/api/users/:id')
+    .get(userController.getUserById)
+    .put(userController.updateUser)
+    .delete(userController.deleteUser);
+
+  app.route('/api/login')
+    .post(loginController.loginUser);
+};

@@ -21,7 +21,7 @@ interface LoginResponse {
 }
 
 const login = (data: LoginData) => {
-  return api.post<LoginResponse>('/users/login', data);
+  return api.post<LoginResponse>('/login', data);
 };
 
 export default {
