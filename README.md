@@ -61,5 +61,24 @@ This is an project that uses [Expo](https://expo.dev) to de client mobile app, [
    npm start
    ```
 
-
-
+```mermaid
+gitGraph
+   commit id: "Initial Commit" tag: "main"
+   branch development
+   commit id: "Setup Project" tag: "development"
+   branch feature_telas_iniciais
+   commit id: "Implement Initial Screens" tag: "feature_telas_iniciais"
+   checkout development
+   merge feature_telas_iniciais tag: "Merge Initial Screens"
+   branch feature_api_login
+   commit id: "Implement API Login" tag: "feature_api_login"
+   checkout development
+   merge feature_api_login tag: "Merge API Login"
+   branch feature_api_signatures
+   commit id: "Implement API Signatures" tag: "feature_api_signatures"
+   checkout development
+   merge feature_api_signatures tag: "Merge API Signatures"
+   branch feature_jwt_auth
+   commit id: "Implement JWT Auth" tag: "feature_jwt_auth"
+   checkout development
+```
