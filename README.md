@@ -89,8 +89,8 @@ gitGraph
 
 ```mermaid
 graph TD;
-    A[Code Commit] --> B(Build);
+    A[Code Commit on "main" branch] --> B(Build);
     B --> C(Test);
-    C --> D(Code Quality Analysis);
-    D --> E(Deploy);
+    C --> D(Code Quality Analysis with SonarCloud);
+    D --> E(Deploy on Docker to Azure);
 ```
