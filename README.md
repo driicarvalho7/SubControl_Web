@@ -61,6 +61,8 @@ This is an project that uses [Expo](https://expo.dev) to de client mobile app, [
    npm start
    ```
 
+## Git Flow
+
 ```mermaid
 gitGraph
    commit id: "Initial Commit" tag: "main"
@@ -81,4 +83,14 @@ gitGraph
    branch feature_jwt_auth
    commit id: "Implement JWT Auth" tag: "feature_jwt_auth"
    checkout development
+```
+
+## Pipeline CI/CD
+
+```mermaid
+graph TD;
+    A[Code Commit] --> B(Build);
+    B --> C(Test);
+    C --> D(Code Quality Analysis);
+    D --> E(Deploy);
 ```
