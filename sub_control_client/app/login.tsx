@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Animated } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Animated, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import loginService from '../services/login/loginService';
+import { router } from 'expo-router';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertSuccessful, setAlertSuccessful] = useState(false);
+  const [email, setEmail] = useState<string>('');
+  const [senha, setSenha] = useState<string>('');
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const [alertVisible, setAlertVisible] = useState<boolean>(false);
+  const [alertSuccessful, setAlertSuccessful] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const alertOpacity = useState(new Animated.Value(0))[0];
 
-  const showAlert = (message: string) => {
+  const showAlert = (message: string, success: boolean) => {
     setAlertMessage(message);
+    setAlertSuccessful(success);
     setAlertVisible(true);
     Animated.timing(alertOpacity, {
       toValue: 1,
@@ -35,23 +38,28 @@ export default function Login() {
     console.log('Email:', email);
     console.log('Senha:', senha);
 
+    setIsLoading(true);
+
     try {
-      const response = await loginService.login({email, password: senha});
+      const response = await loginService.login({ email, password: senha });
       const result = response.data;
 
       console.log('API Response:', result);
 
-      if (response.status == 200) {
-        setAlertSuccessful(true);
-        showAlert('Logado com Sucesso!');
+      if (response.status === 200) {
+        showAlert('Logado com Sucesso!', true);
+        router.replace('/home');
       } else {
-        setAlertSuccessful(false);
-        showAlert(result.message || 'Login failed');
+        showAlert(result.message || 'Login failed', false);
       }
-    } catch (error) {
-      console.error('Error:', error);
-      setAlertSuccessful(false);
-      showAlert('Network request failed');
+    } catch (error: any) {
+      if (error.response) {
+        showAlert(error.response.data.message || 'Login failed', false);
+      } else {
+        showAlert('Network request failed', false);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,9 +67,9 @@ export default function Login() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         {alertVisible && (
-            <Animated.View style={[styles.alert, { opacity: alertOpacity, backgroundColor: alertSuccessful ? '#25a125' : '#ff4444' }]}>
-              <Text style={styles.alertText}>{alertMessage}</Text>
-            </Animated.View>
+          <Animated.View style={[styles.alert, { opacity: alertOpacity, backgroundColor: alertSuccessful ? '#4caf50' : '#f44336' }]}>
+            <Text style={styles.alertText}>{alertMessage}</Text>
+          </Animated.View>
         )}
         <LinearGradient
           colors={['#0d1121', '#03204b']}
@@ -85,8 +93,8 @@ export default function Login() {
             value={senha}
             onChangeText={setSenha}
           />
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Logar</Text>
+          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
+            {isLoading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.buttonText}>Logar</Text>}
           </TouchableOpacity>
         </LinearGradient>
       </View>
@@ -148,7 +156,6 @@ const styles = StyleSheet.create({
     top: 50,
     left: 0,
     right: 0,
-    backgroundColor: '#ff4444',
     padding: 15,
     zIndex: 1000,
     alignItems: 'center',
@@ -158,4 +165,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-

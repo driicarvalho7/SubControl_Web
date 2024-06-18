@@ -1,7 +1,9 @@
+// config/express.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
 const connectDB = require('./db');
+const cookieParser = require('cookie-parser');
 
 module.exports = () => {
   const app = express();
@@ -14,10 +16,16 @@ module.exports = () => {
 
   // MIDDLEWARES
   app.use(bodyParser.json());
+  app.use(cookieParser());
 
   // ROTAS
   const users = require('../api/routers/users');
-  users(app);
+  const register = require('../api/routers/register');
+  const login = require('../api/routers/login');
+
+  app.use('/api/users', users);
+  app.use('/api/register', register);
+  app.use('/api/login', login);
 
   return app;
 };

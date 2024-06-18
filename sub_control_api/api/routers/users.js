@@ -1,16 +1,12 @@
-module.exports = app => {
-  const userController = require('../controllers/users')();
-  const loginController = require('../controllers/login')();
+// routers/users.js
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
+const authenticateToken = require('../middlewares/authMiddleware');
 
-  app.route('/api/users')
-    .post(userController.createUser)
-    .get(userController.getUsers);
+router.get('/', authenticateToken, userController.getUsers);
+router.get('/:id', authenticateToken, userController.getUserById);
+router.put('/:id', authenticateToken, userController.updateUser);
+router.delete('/:id', authenticateToken, userController.deleteUser);
 
-  app.route('/api/users/:id')
-    .get(userController.getUserById)
-    .put(userController.updateUser)
-    .delete(userController.deleteUser);
-
-  app.route('/api/login')
-    .post(loginController.loginUser);
-};
+module.exports = router;

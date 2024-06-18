@@ -3,8 +3,28 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useEffect } from 'react';
+import userService from '@/services/users/userService';
 
 export default function Home() {
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await userService.getAll();
+        console.log(response.data);
+      } catch (error: any) {
+        if (error.response) {
+          console.log(error.response.data.message);
+        } else {
+          console.log('Network request failed');
+        }
+      }
+    };
+  
+    fetchUsers();
+  }, []);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}

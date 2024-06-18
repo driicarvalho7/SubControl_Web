@@ -1,4 +1,4 @@
-import api from '../apiService';
+import { api_login } from "../apiService";
 
 interface LoginData {
   email: string;
@@ -21,7 +21,7 @@ interface LoginResponse {
 }
 
 const login = (data: LoginData) => {
-  return api.post<LoginResponse>('/login', data);
+  return api_login.post<LoginResponse>('/login', data);
 };
 
 export default {
