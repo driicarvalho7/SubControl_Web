@@ -11,6 +11,15 @@ const subscriptions = [
   { id: 5, name: 'Disney Plus', price: 'R$ 43.90', due: 'Vencimento em 15 dias', period: '/mês', icon: require('../assets/icons/disney.png'), opacity: 0.35 }
 ];
 
+function ValorTotalAssinaturas() {
+  let total = 0;
+  subscriptions.forEach(subscription => {
+    const priceNumber = parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
+    total += priceNumber;
+  });
+  return (<Text style={styles.cardTitle}>R$ {total.toFixed(2)}</Text>)
+}
+
 export default function App() {
     
     const handleNavigate = () => {
@@ -24,7 +33,7 @@ export default function App() {
             <Text style={styles.titleBlue}>Assinaturas</Text>
             <Text style={styles.subtitle}>Gerenciamento perfeito de assinaturas, simplificado para sua conveniência.</Text>
             <View style={styles.card}>
-              <Text style={styles.cardTitle}>R$ 144,36</Text>
+              <ValorTotalAssinaturas />
               <Text style={styles.cardSubtitle}>Valor gasto este mês</Text>
             </View>
             <View style={styles.subscriptionContainer}>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import loginService from '../services/login/loginService';
+import { router } from 'expo-router';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -32,14 +33,9 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    console.log('Email:', email);
-    console.log('Senha:', senha);
-
     try {
       const response = await loginService.login({email, password: senha});
       const result = response.data;
-
-      console.log('API Response:', result);
 
       if (response.status == 200) {
         setAlertSuccessful(true);
@@ -49,10 +45,13 @@ export default function Login() {
         showAlert(result.message || 'Login failed');
       }
     } catch (error) {
-      console.error('Error:', error);
       setAlertSuccessful(false);
       showAlert('Network request failed');
     }
+  };
+
+  const handleNavigate = () => {
+      router.replace('/home');
   };
 
   return (
@@ -85,7 +84,7 @@ export default function Login() {
             value={senha}
             onChangeText={setSenha}
           />
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <TouchableOpacity style={styles.button} onPress={handleNavigate}>
             <Text style={styles.buttonText}>Logar</Text>
           </TouchableOpacity>
         </LinearGradient>
