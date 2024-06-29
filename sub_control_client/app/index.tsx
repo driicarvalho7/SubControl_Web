@@ -22,42 +22,42 @@ function ValorTotalAssinaturas() {
 
 export default function App() {
     
-    const handleNavigate = () => {
-        router.replace('/login');
-    };
+  const handleNavigate = () => {
+      router.replace('/login');
+  };
 
-    return (
-        <View style={styles.container}>
-          <LinearGradient colors={['#0d1121', '#03204b']} style={styles.gradient}>
-            <Text style={styles.title}>Gerencie suas</Text>
-            <Text style={styles.titleBlue}>Assinaturas</Text>
-            <Text style={styles.subtitle}>Gerenciamento perfeito de assinaturas, simplificado para sua conveniência.</Text>
-            <View style={styles.card}>
-              <ValorTotalAssinaturas />
-              <Text style={styles.cardSubtitle}>Valor gasto este mês</Text>
-            </View>
-            <View style={styles.subscriptionContainer}>
-              {subscriptions.map((subscription, index) => (
-                <View key={subscription.id} style={[styles.subscription, { zIndex: subscriptions.length - index, opacity: subscription.opacity, marginBottom: index < subscriptions.length - 1 ? -20 : 50 }]}>
-                  <Image source={subscription.icon} style={styles.icon} />
-                  <View style={styles.subscriptionTextContainer}>
-                    <Text style={styles.subscriptionTitle}>{subscription.name}</Text>
-                    <Text style={styles.subscriptionDetail}>{subscription.due}</Text>
-                  </View>
-                  <View style={styles.subscriptionPriceContainer}>
-                    <Text style={styles.subscriptionPrice}>{subscription.price}</Text>
-                    <Text style={styles.subscriptionPeriod}>{subscription.period}</Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-            <TouchableOpacity style={styles.button} onPress={handleNavigate}>
-                {/*<Text style={styles.buttonText}>Vamos Nessa!</Text>*/}
-                <Link href={'/login'} style={styles.buttonText}>Vamos Nessa!</Link>
-            </TouchableOpacity>
-          </LinearGradient>
+  return (
+    <View style={styles.container}>
+      <LinearGradient colors={['#0d1121', '#03204b']} style={styles.gradient}>
+        <Text style={styles.title}>Gerencie suas</Text>
+        <Text style={styles.titleBlue}>Assinaturas</Text>
+        <Text style={styles.subtitle}>Gerenciamento perfeito de assinaturas, simplificado para sua conveniência.</Text>
+        <View style={styles.card}>
+          <ValorTotalAssinaturas />
+          <Text style={styles.cardSubtitle}>Valor gasto este mês</Text>
         </View>
-    );
+        <View style={styles.subscriptionContainer}>
+          {subscriptions.map((subscription, index) => (
+            <View key={subscription.id} style={[styles.subscription, { zIndex: subscriptions.length - index, opacity: subscription.opacity, marginBottom: index < subscriptions.length - 1 ? -20 : 50 }]}>
+              <Image source={subscription.icon} style={styles.icon} />
+              <View style={styles.subscriptionTextContainer}>
+                <Text style={styles.subscriptionTitle}>{subscription.name}</Text>
+                <Text style={styles.subscriptionDetail}>{subscription.due}</Text>
+              </View>
+              <View style={styles.subscriptionPriceContainer}>
+                <Text style={styles.subscriptionPrice}>{subscription.price}</Text>
+                <Text style={styles.subscriptionPeriod}>{subscription.period}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleNavigate}>
+            {/*<Text style={styles.buttonText}>Vamos Nessa!</Text>*/}
+            <Link href={'/login'} style={styles.buttonText}>Vamos Nessa!</Link>
+        </TouchableOpacity>
+      </LinearGradient>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
