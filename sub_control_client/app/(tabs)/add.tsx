@@ -82,7 +82,10 @@ export default function AddSubscriptionScreen() {
           <View style={styles.subscriptionItem}>
             <Image source={item.icon} style={styles.subscriptionIcon} />
             <Text style={styles.subscriptionName}>{item.name}</Text>
-            <TouchableOpacity style={styles.addButton} onPress={() => handleClickAdd(false, item.id)}>
+            <TouchableOpacity 
+              style={styles.addButton} 
+              onPress={() => handleClickAdd(false, item.id)}
+            >
               <Ionicons name="add-circle-outline" size={28} color="white" />
             </TouchableOpacity>
           </View>

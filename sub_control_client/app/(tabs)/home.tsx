@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Image, ScrollView, Dimensions } from 'react-nat
 import { LinearGradient } from 'expo-linear-gradient';
 
 const subscriptions = [
-  { id: 1, name: 'Netflix', price: 'R$ 8.44', due: 'Vencimento em 2 dias', period: '/mês', icon: require('../../assets/icons/netflix.png'), cardLastDigits: '1234', cardBrand: 'Visa' },
-  { id: 2, name: 'Spotify', price: 'R$ 100', due: 'Vencimento em 6 dias', period: '/ano', icon: require('../../assets/icons/spotify.png'), cardLastDigits: '5678', cardBrand: 'Mastercard' },
-  { id: 3, name: 'Disney +', price: 'R$ 100', due: 'Vencimento em 16 dias', period: '/ano', icon: require('../../assets/icons/disney.png'), cardLastDigits: '1234', cardBrand: 'Visa' },
+  { id: 1, name: 'Netflix', price: 'R$ 55,49', due: 'Vencimento em 2 dias', period: '/mês', icon: require('../../assets/icons/netflix.png'), cardLastDigits: '1234', cardBrand: 'Visa' },
+  { id: 2, name: 'Spotify', price: 'R$ 11,99', due: 'Vencimento em 6 dias', period: '/mês', icon: require('../../assets/icons/spotify.png'), cardLastDigits: '5678', cardBrand: 'Mastercard' },
+  { id: 3, name: 'Disney +', price: 'R$ 43,90', due: 'Vencimento em 16 dias', period: '/mês', icon: require('../../assets/icons/disney.png'), cardLastDigits: '1234', cardBrand: 'Visa' },
 ];
 
 const totalGasto = subscriptions.reduce((total, subscription) => {

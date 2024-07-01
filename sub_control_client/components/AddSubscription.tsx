@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, FlatList, Modal, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
 
-interface Subscription {
-  id: number;
-  name: string;
-  icon: any;
+interface Item {
+  label: string;
+  value: string;
 }
 
 export default function AddSubscription() {
@@ -26,11 +24,129 @@ export default function AddSubscription() {
   const [paymentMethod, setPaymentMethod] = useState<string>('pix');
   const [reminder, setReminder] = useState<string>('never');
 
-  // Dropdown states
-  const [openCycle, setOpenCycle] = useState(false);
-  const [openCurrency, setOpenCurrency] = useState(false);
-  const [openPaymentMethod, setOpenPaymentMethod] = useState(false);
-  const [openReminder, setOpenReminder] = useState(false);
+  // Modal states
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalType, setModalType] = useState<string>('');
+
+  const openModal = (type: string) => {
+    setModalType(type);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const getLabelFromValue = (type: string, value: string): string => {
+    let items: Item[] = [];
+    switch (type) {
+      case 'cycle':
+        items = [
+          { label: 'Diário', value: 'days' },
+          { label: 'Semanal', value: 'weeks' },
+          { label: 'Mensal', value: 'months' },
+          { label: 'Anual', value: 'years' },
+        ];
+        break;
+      case 'currency':
+        items = [
+          { label: 'Dólar ($)', value: 'usd' },
+          { label: 'Real (R$)', value: 'brl' },
+          { label: 'Euro (€)', value: 'eur' },
+        ];
+        break;
+      case 'paymentMethod':
+        items = [
+          { label: 'PIX', value: 'pix' },
+          { label: 'Cartão de Crédito', value: 'credit' },
+          { label: 'Cartão de Débito', value: 'debt' },
+          { label: 'Boleto Bancário', value: 'boleto' },
+        ];
+        break;
+      case 'reminder':
+        items = [
+          { label: 'Nunca', value: 'never' },
+          { label: '7 dias antes', value: 'week' },
+          { label: 'No começo do mês', value: 'month' },
+        ];
+        break;
+      default:
+        break;
+    }
+    const item = items.find(item => item.value === value);
+    return item ? item.label : '';
+  };
+
+  const renderModalContent = () => {
+    let items: Item[] = [];
+    let selectedValue = '';
+    let setSelectedValue: (value: string) => void;
+
+    switch (modalType) {
+      case 'cycle':
+        items = [
+          { label: 'Days', value: 'days' },
+          { label: 'Weeks', value: 'weeks' },
+          { label: 'Months', value: 'months' },
+          { label: 'Years', value: 'years' },
+        ];
+        selectedValue = cycle;
+        setSelectedValue = setCycle;
+        break;
+      case 'currency':
+        items = [
+          { label: 'Dólar ($)', value: 'usd' },
+          { label: 'Real (R$)', value: 'brl' },
+          { label: 'Euro (€)', value: 'eur' },
+        ];
+        selectedValue = currency;
+        setSelectedValue = setCurrency;
+        break;
+      case 'paymentMethod':
+        items = [
+          { label: 'PIX', value: 'pix' },
+          { label: 'Cartão de Crédito', value: 'credit' },
+          { label: 'Cartão de Débito', value: 'debt' },
+          { label: 'Boleto Bancário', value: 'boleto' },
+        ];
+        selectedValue = paymentMethod;
+        setSelectedValue = setPaymentMethod;
+        break;
+      case 'reminder':
+        items = [
+          { label: 'Nunca', value: 'never' },
+          { label: '7 dias antes', value: 'week' },
+          { label: 'No começo do mês', value: 'month' },
+        ];
+        selectedValue = reminder;
+        setSelectedValue = setReminder;
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <View style={styles.modalContent}>
+        <ScrollView>
+          {items.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.modalItem,
+                item.value === selectedValue ? styles.modalItemSelected : null,
+              ]}
+              onPress={() => {
+                setSelectedValue(item.value);
+                closeModal();
+              }}
+            >
+              <Text style={styles.modalItemText}>{item.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    );
+  };
 
   const data = [
     { key: 'Nome', component: <TextInput style={styles.modalInput} placeholder="Nome" placeholderTextColor="#aaa" /> },
@@ -76,104 +192,51 @@ export default function AddSubscription() {
     {
       key: 'Ciclo',
       component: (
-        <DropDownPicker
-          open={openCycle}
-          value={cycle}
-          items={[
-            { label: 'Days', value: 'days' },
-            { label: 'Weeks', value: 'weeks' },
-            { label: 'Months', value: 'months' },
-            { label: 'Years', value: 'years' },
-          ]}
-          setOpen={setOpenCycle}
-          setValue={setCycle}
-          setItems={() => {}}
-          style={styles.dropdown}
-          textStyle={styles.dropdownText}
-          dropDownContainerStyle={styles.dropdownContainer}
-          zIndex={3000}
-          zIndexInverse={1000}
-        />
+        <TouchableOpacity style={styles.selectionInput} onPress={() => openModal('cycle')}>
+          <Text style={styles.selectionInputText}>{getLabelFromValue('cycle', cycle)}</Text>
+        </TouchableOpacity>
       ),
     },
     {
       key: 'Valor',
       component: (
-        <TextInput
-          style={styles.modalInput}
-          placeholder="Valor"
-          placeholderTextColor="#aaa"
-          keyboardType="numeric"
-          value={value}
-          onChangeText={setValue}
-        />
+        <View style={styles.inputGroup}>
+          <View style={styles.valueInputContainer}>
+            <Text style={styles.currencyLabel}>{getLabelFromValue('currency', currency)}</Text>
+            <TextInput
+              style={[styles.modalInput, styles.valueInput]}
+              placeholder="Valor"
+              placeholderTextColor="#aaa"
+              keyboardType="numeric"
+              value={value}
+              onChangeText={setValue}
+            />
+          </View>
+        </View>
       ),
     },
     {
       key: 'Moeda',
       component: (
-        <DropDownPicker
-          open={openCurrency}
-          value={currency}
-          items={[
-            { label: 'Dólar ($)', value: 'usd' },
-            { label: 'Real (R$)', value: 'brl' },
-            { label: 'Euro (€)', value: 'eur' },
-          ]}
-          setOpen={setOpenCurrency}
-          setValue={setCurrency}
-          setItems={() => {}}
-          style={styles.dropdown}
-          textStyle={styles.dropdownText}
-          dropDownContainerStyle={styles.dropdownContainer}
-          zIndex={2500}
-          zIndexInverse={1500}
-        />
+        <TouchableOpacity style={styles.selectionInput} onPress={() => openModal('currency')}>
+          <Text style={styles.selectionInputText}>{getLabelFromValue('currency', currency)}</Text>
+        </TouchableOpacity>
       ),
     },
     {
       key: 'Método de Pagamento',
       component: (
-        <DropDownPicker
-          open={openPaymentMethod}
-          value={paymentMethod}
-          items={[
-            { label: 'PIX', value: 'pix' },
-            { label: 'Cartão de Crédito', value: 'credit' },
-            { label: 'Cartão de Débito', value: 'debt' },
-            { label: 'Boleto Bancário', value: 'boleto' },
-          ]}
-          setOpen={setOpenPaymentMethod}
-          setValue={setPaymentMethod}
-          setItems={() => {}}
-          style={styles.dropdown}
-          textStyle={styles.dropdownText}
-          dropDownContainerStyle={styles.dropdownContainer}
-          zIndex={2000}
-          zIndexInverse={2000}
-        />
+        <TouchableOpacity style={styles.selectionInput} onPress={() => openModal('paymentMethod')}>
+          <Text style={styles.selectionInputText}>{getLabelFromValue('paymentMethod', paymentMethod)}</Text>
+        </TouchableOpacity>
       ),
     },
     {
       key: 'Lembre-me',
       component: (
-        <DropDownPicker
-          open={openReminder}
-          value={reminder}
-          items={[
-            { label: 'Nunca', value: 'never' },
-            { label: '7 dias antes', value: 'week' },
-            { label: 'No começo do mês', value: 'month' },
-          ]}
-          setOpen={setOpenReminder}
-          setValue={setReminder}
-          setItems={() => {}}
-          style={styles.dropdown}
-          textStyle={styles.dropdownText}
-          dropDownContainerStyle={styles.dropdownContainer}
-          zIndex={1500}
-          zIndexInverse={2500}
-        />
+        <TouchableOpacity style={styles.selectionInput} onPress={() => openModal('reminder')}>
+          <Text style={styles.selectionInputText}>{getLabelFromValue('reminder', reminder)}</Text>
+        </TouchableOpacity>
       ),
     },
   ];
@@ -213,6 +276,11 @@ export default function AddSubscription() {
           </TouchableOpacity>
         }
       />
+      <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer}>
+          {renderModalContent()}
+        </View>
+      </Modal>
     </LinearGradient>
   );
 }
@@ -276,6 +344,18 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingHorizontal: 10,
   },
+  selectionInput: {
+    width: '100%',
+    height: 40,
+    backgroundColor: '#2a2a2a',
+    borderRadius: 5,
+    color: 'white',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+  },
+  selectionInputText: {
+    color: 'white',
+  },
   datePicker: {
     width: '100%',
     height: 40,
@@ -299,16 +379,6 @@ const styles = StyleSheet.create({
     color: '#f6ffff',
     paddingHorizontal: 10,
   },
-  dropdown: {
-    backgroundColor: '#2a2a2a',
-    borderColor: '#2a2a2a',
-  },
-  dropdownText: {
-    color: 'white',
-  },
-  dropdownContainer: {
-    backgroundColor: '#2a2a2a',
-  },
   modalButton: {
     height: 50,
     backgroundColor: '#1e90ff',
@@ -322,4 +392,39 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  modalItemSelected: {
+    backgroundColor: '#ddd',
+  },
+  modalItemText: {
+    fontSize: 18,
+  },
+  valueInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  currencyLabel: {
+    color: 'white',
+    marginRight: 10,
+  },
+  valueInput: {
+    flex: 1,
+  },  
 });

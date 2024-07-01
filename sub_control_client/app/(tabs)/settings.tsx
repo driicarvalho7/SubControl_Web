@@ -8,7 +8,9 @@ export default function Settings() {
   const router = useRouter();
   
   const handleNavigate = () => {
-    router.replace('/login');
+    router.push({
+      pathname: '/login'
+    });
   };
 
   return (
@@ -26,7 +28,7 @@ export default function Settings() {
           <Text style={styles.label}>Telefone</Text>
           <TextInput style={styles.input} value="+55 (19) 98312-3425" editable={false} />
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={() => {handleNavigate}}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleNavigate}>
           <Text style={styles.logoutButtonText}>Logout</Text>
           <Ionicons name="exit" size={20} color="#aaa" style={styles.searchIcon} />
         </TouchableOpacity>
