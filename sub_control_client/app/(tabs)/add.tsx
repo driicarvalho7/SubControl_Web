@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList, Image, M
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-
 const subscriptions = [
   { id: 1, name: 'Netflix', icon: require('../../assets/icons/netflix.png') },
   { id: 2, name: 'Disney +', icon: require('../../assets/icons/disney.png') },
@@ -20,7 +19,6 @@ const subscriptions = [
   { id: 13, name: 'Vivo', icon: require('../../assets/icons/vivo.png') },
   { id: 14, name: 'Claro', icon: require('../../assets/icons/claro.png') },
 ];
-
 export default function AddSubscriptionScreen() {
   const [isFocused, setIsFocused] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -36,7 +34,6 @@ export default function AddSubscriptionScreen() {
     
     setFilteredSubscriptions(filtered);
   }
-  
   const handleClickAdd = (custom: boolean, sub_id: number) => {
     if (custom) {
       router.push({
@@ -51,7 +48,6 @@ export default function AddSubscriptionScreen() {
       });
     }
   }
-
   return (
     <LinearGradient colors={['#0d1121', '#03204b']} style={styles.gradient}>
       <View style={styles.header}>
@@ -94,7 +90,80 @@ export default function AddSubscriptionScreen() {
     </LinearGradient>
   );
 }
+const styles423 = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'transparent',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 40,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 20,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(26, 26, 26, 0.7)',
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  searchContainerFocused: {
+    borderColor: '#1e90ff',
+    borderWidth: 2,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    color: 'white',
+    paddingHorizontal: 10,
+  },
+  searchIcon: {
+    paddingHorizontal: 10,
+  },
+  customSubscriptionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 50,
+    backgroundColor: '#1e90ff',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+  },
 
+  subscriptionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(26, 26, 26, 0.7)',
+    padding: 10,
+    height: 80,
+    borderRadius: 10,
+    margin: 10
+  },
+  subscriptionIcon: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+  },
+  subscriptionName: {
+    fontSize: 16,
+    color: 'white',
+    flex: 1,
+  },
+  addButton: {
+    padding: 10,
+  },
+});
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
