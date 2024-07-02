@@ -68,21 +68,52 @@ gitGraph
    commit id: "Initial Commit" tag: "main"
    branch development
    commit id: "Setup Project" tag: "development"
+   
+   # Adicionando as novas branches logo após a development
+   branch tests
+   commit id: "Add Initial Tests" tag: "tests"
+   checkout development
+   merge tests tag: "Merge Initial Tests"
+   
+   branch bug_fix
+   commit id: "Fix Initial Bug" tag: "bug_fix"
+   checkout development
+   merge bug_fix tag: "Merge Bug Fix"
+   
+   branch updates
+   commit id: "Update Initial Code" tag: "updates"
+   checkout development
+   merge updates tag: "Merge Updates"
+
    branch feature_telas_iniciais
    commit id: "Implement Initial Screens" tag: "feature_telas_iniciais"
    checkout development
    merge feature_telas_iniciais tag: "Merge Initial Screens"
+   
    branch feature_api_login
    commit id: "Implement API Login" tag: "feature_api_login"
    checkout development
    merge feature_api_login tag: "Merge API Login"
+   
    branch feature_api_signatures
    commit id: "Implement API Signatures" tag: "feature_api_signatures"
    checkout development
    merge feature_api_signatures tag: "Merge API Signatures"
+   
    branch feature_jwt_auth
    commit id: "Implement JWT Auth" tag: "feature_jwt_auth"
    checkout development
+   merge feature_jwt_auth tag: "Merge JWT Auth"
+
+   # Adicionando a branch feature_calendar
+   branch feature_calendar
+   commit id: "Implement Calendar Feature" tag: "feature_calendar"
+   checkout development
+   merge feature_calendar tag: "Merge Calendar Feature"
+   
+   checkout main
+   merge development tag: "Release"
+
 ```
 
 ## Pipeline CI/CD
