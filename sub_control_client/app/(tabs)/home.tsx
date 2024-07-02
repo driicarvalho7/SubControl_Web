@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -8,25 +8,28 @@ const subscriptions = [
   { id: 3, name: 'Disney +', price: 'R$ 43,90', due: 'Vencimento em 16 dias', period: '/mês', icon: require('../../assets/icons/disney.png'), cardLastDigits: '1234', cardBrand: 'Visa' },
 ];
 
-const totalGasto = subscriptions.reduce((total, subscription) => {
-  const priceNumber = parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
-  return total + priceNumber;
-}, 0);
+const totalGasto = useMemo(() => {
+  return subscriptions.reduce((total, subscription) => {
+    const priceNumber = parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
+    return total + priceNumber;
+  }, 0);
+}, [subscriptions]);
 
-const groupedExpenses = subscriptions.reduce((acc: { [key: string]: { total: number, brand: string } }, subscription) => {
-  const key = `${subscription.cardBrand} **** ${subscription.cardLastDigits}`;
-  if (!acc[key]) {
-    acc[key] = { total: 0, brand: subscription.cardBrand };
-  }
-  acc[key].total += parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
-  return acc;
-}, {});
-
-const groupedExpensesArray = Object.keys(groupedExpenses).map(key => ({
-  card: key,
-  brand: groupedExpenses[key].brand,
-  total: groupedExpenses[key].total.toFixed(2),
-}));
+const groupedExpenses = useMemo(() => {
+  const expenses = subscriptions.reduce((acc, subscription) => {
+    const key = `${subscription.cardBrand} **** ${subscription.cardLastDigits}`;
+    if (!acc[key]) {
+      acc[key] = { total: 0, brand: subscription.cardBrand };
+    }
+    acc[key].total += parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
+    return acc;
+  }, {});
+  return Object.keys(expenses).map(key => ({
+    card: key,
+    brand: expenses[key].brand,
+    total: expenses[key].total.toFixed(2),
+  }));
+}, [subscriptions]);
 
 const { height: windowHeight } = Dimensions.get('window');
 
