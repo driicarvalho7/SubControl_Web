@@ -70,20 +70,24 @@ export default function Home() {
         <View style={styles.upcomingPayments}>
           <Text style={styles.sectionTitle}>Próximos pagamentos</Text>
           <View style={styles.paymentCardsContainer}>
-            {subscriptions.slice(0, 2).map(subscription => (
-              <View key={subscription.id} style={styles.paymentCard}>
-                <Image source={subscription.icon} style={styles.paymentIcon} />
-                <View style={styles.paymentInfo}>
-                  <Text style={styles.paymentName}>{subscription.name}</Text>
+            {subscriptions.length > 0 ? (
+              subscriptions.slice(0, 2).map(subscription => (
+                <View key={subscription.id} style={styles.paymentCard}>
+                  <Image source={subscription.icon} style={styles.paymentIcon} />
+                  <View style={styles.paymentInfo}>
+                    <Text style={styles.paymentName}>{subscription.name}</Text>
+                  </View>
+                  <View style={styles.paymentInfo}>
+                    <Text style={styles.paymentPrice}>{subscription.price}</Text>
+                    <Text style={styles.paymentPeriod}>{subscription.period}</Text>
+                  </View>
+                  <Text style={styles.paymentDue}>{subscription.due}</Text>
+                  <Text style={styles.paymentDue}>Cartão: **** {subscription.cardLastDigits}</Text>
                 </View>
-                <View style={styles.paymentInfo}>
-                  <Text style={styles.paymentPrice}>{subscription.price}</Text>
-                  <Text style={styles.paymentPeriod}>{subscription.period}</Text>
-                </View>
-                <Text style={styles.paymentDue}>{subscription.due}</Text>
-                <Text style={styles.paymentDue}>Cartão: **** {subscription.cardLastDigits}</Text>
-              </View>
-            ))}
+              ))
+            ) : (
+              <Text style={styles.noSubscriptionsText}>Nenhuma assinatura encontrada</Text>
+            )}
           </View>
         </View>
         <View style={styles.groupedExpenses}>
