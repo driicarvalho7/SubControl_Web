@@ -274,6 +274,7 @@ export default function AddSubscription() {
           <TouchableOpacity style={styles.modalButton} onPress={() => router.push('/home')}>
             <Text style={styles.modalButtonText}>{isCustomSubscription ? 'Salvar' : 'Adicionar Assinatura'}</Text>
           </TouchableOpacity>
+          
         }
       />
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
@@ -285,13 +286,72 @@ export default function AddSubscription() {
   );
 }
 
+/** 
+* Inicio dos Modais
+*/
+const styles2 = StyleSheet.create({
+   gradient: {
+ 
+  dateNotPickerText: {
+    color: '#f6ffff',
+    paddingHorizontal: 10,
+  },
+  modalButton: {
+    height: 49,
+    backgroundColor: '#1e90ff',
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 20,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 18,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  modalItemSelected: {
+    backgroundColor: '#ddd',
+  },
+  modalItemText: {
+    fontSize: 18,
+  },
+  valueInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  currencyLabel: {
+    color: 'white',
+    marginRight: 10,
+  },
+  valueInput: {
+    flex: 1,
+  },  
+});
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
   },
   container: {
-    marginTop: 40,
-    padding: 20,
+    marginTop: 39,
+    padding: 19,
     backgroundColor: 'transparent',
   },
   backButton: {
@@ -299,22 +359,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalIcon: {
-    width: 50,
-    height: 50,
+    width: 49,
+    height: 49,
     marginBottom: 20,
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 23,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 20,
     textAlign: 'center',
   },
   modalTitleIcon: {
-    fontSize: 24,
+    fontSize: 23,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 20,
+    marginBottom: 19,
     marginLeft: 20,
     textAlign: 'center',
   },
@@ -358,7 +418,7 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     width: '100%',
-    height: 40,
+    height: 39,
     borderRadius: 5,
     color: 'white',
     justifyContent: 'center',
@@ -380,7 +440,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   modalButton: {
-    height: 50,
+    height: 49,
     backgroundColor: '#1e90ff',
     borderRadius: 5,
     justifyContent: 'center',
