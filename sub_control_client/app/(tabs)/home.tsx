@@ -1,32 +1,46 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const subscriptions = [
+interface Subscription {
+  id: number;
+  name: string;
+  price: string;
+  due: string;
+  period: string;
+  icon: any;
+  cardLastDigits: string;
+  cardBrand: string;
+}
+
+const subscriptions: Subscription[] = [
   { id: 1, name: 'Netflix', price: 'R$ 55,49', due: 'Vencimento em 2 dias', period: '/mês', icon: require('../../assets/icons/netflix.png'), cardLastDigits: '1234', cardBrand: 'Visa' },
   { id: 2, name: 'Spotify', price: 'R$ 11,99', due: 'Vencimento em 6 dias', period: '/mês', icon: require('../../assets/icons/spotify.png'), cardLastDigits: '5678', cardBrand: 'Mastercard' },
   { id: 3, name: 'Disney +', price: 'R$ 43,90', due: 'Vencimento em 16 dias', period: '/mês', icon: require('../../assets/icons/disney.png'), cardLastDigits: '1234', cardBrand: 'Visa' },
 ];
 
-const totalGasto = subscriptions.reduce((total, subscription) => {
-  const priceNumber = parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
-  return total + priceNumber;
-}, 0);
+const totalGasto = useMemo(() => {
+  return subscriptions.reduce((total, subscription) => {
+    const priceNumber = parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
+    return total + priceNumber;
+  }, 0);
+}, [subscriptions]);
 
-const groupedExpenses = subscriptions.reduce((acc: { [key: string]: { total: number, brand: string } }, subscription) => {
-  const key = `${subscription.cardBrand} **** ${subscription.cardLastDigits}`;
-  if (!acc[key]) {
-    acc[key] = { total: 0, brand: subscription.cardBrand };
-  }
-  acc[key].total += parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
-  return acc;
-}, {});
-
-const groupedExpensesArray = Object.keys(groupedExpenses).map(key => ({
-  card: key,
-  brand: groupedExpenses[key].brand,
-  total: groupedExpenses[key].total.toFixed(2),
-}));
+const groupedExpenses = useMemo(() => {
+  const expenses = subscriptions.reduce((acc, subscription) => {
+    const key = `${subscription.cardBrand} **** ${subscription.cardLastDigits}`;
+    if (!acc[key]) {
+      acc[key] = { total: 0, brand: subscription.cardBrand };
+    }
+    acc[key].total += parseFloat(subscription.price.replace('R$', '').replace(',', '.').trim());
+    return acc;
+  }, {});
+  return Object.keys(expenses).map(key => ({
+    card: key,
+    brand: expenses[key].brand,
+    total: expenses[key].total.toFixed(2),
+  }));
+}, [subscriptions]);
 
 const { height: windowHeight } = Dimensions.get('window');
 
@@ -56,20 +70,24 @@ export default function Home() {
         <View style={styles.upcomingPayments}>
           <Text style={styles.sectionTitle}>Próximos pagamentos</Text>
           <View style={styles.paymentCardsContainer}>
-            {subscriptions.slice(0, 2).map(subscription => (
-              <View key={subscription.id} style={styles.paymentCard}>
-                <Image source={subscription.icon} style={styles.paymentIcon} />
-                <View style={styles.paymentInfo}>
-                  <Text style={styles.paymentName}>{subscription.name}</Text>
+            {subscriptions.length > 0 ? (
+              subscriptions.slice(0, 2).map(subscription => (
+                <View key={subscription.id} style={styles.paymentCard}>
+                  <Image source={subscription.icon} style={styles.paymentIcon} />
+                  <View style={styles.paymentInfo}>
+                    <Text style={styles.paymentName}>{subscription.name}</Text>
+                  </View>
+                  <View style={styles.paymentInfo}>
+                    <Text style={styles.paymentPrice}>{subscription.price}</Text>
+                    <Text style={styles.paymentPeriod}>{subscription.period}</Text>
+                  </View>
+                  <Text style={styles.paymentDue}>{subscription.due}</Text>
+                  <Text style={styles.paymentDue}>Cartão: **** {subscription.cardLastDigits}</Text>
                 </View>
-                <View style={styles.paymentInfo}>
-                  <Text style={styles.paymentPrice}>{subscription.price}</Text>
-                  <Text style={styles.paymentPeriod}>{subscription.period}</Text>
-                </View>
-                <Text style={styles.paymentDue}>{subscription.due}</Text>
-                <Text style={styles.paymentDue}>Cartão: **** {subscription.cardLastDigits}</Text>
-              </View>
-            ))}
+              ))
+            ) : (
+              <Text style={styles.noSubscriptionsText}>Nenhuma assinatura encontrada</Text>
+            )}
           </View>
         </View>
         <View style={styles.groupedExpenses}>
