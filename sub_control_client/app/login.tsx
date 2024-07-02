@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFe
 import { LinearGradient } from 'expo-linear-gradient';
 import loginService from '../services/login/loginService';
 import { router } from 'expo-router';
-
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -11,7 +10,6 @@ export default function Login() {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertSuccessful, setAlertSuccessful] = useState(false);
   const alertOpacity = useState(new Animated.Value(0))[0];
-
   const showAlert = (message: string) => {
     setAlertMessage(message);
     setAlertVisible(true);
@@ -31,7 +29,6 @@ export default function Login() {
       }, 3000);
     });
   };
-
   const handleLogin = async () => {
     try {
       const response = await loginService.login({email, password: senha});
@@ -49,11 +46,9 @@ export default function Login() {
       showAlert('Network request failed');
     }
   };
-
   const handleNavigate = () => {
       router.replace('/home');
   };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -92,7 +87,56 @@ export default function Login() {
     </TouchableWithoutFeedback>
   );
 }
-
+const styles23 = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff', 
+    textAlign: 'center'
+  },
+  titleBlue: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#0085ff', 
+    textAlign: 'center'
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#fff', 
+    textAlign: 'center',
+    marginVertical: 20,
+  },
+  input: {
+    width: '85%',
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#1a1a1a',
+    color: '#fff',
+    marginVertical: 10,
+  },
+  button: {
+    marginTop: 20,
+    width: '85%',
+    backgroundColor: '#377ded',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+});
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -157,4 +201,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
